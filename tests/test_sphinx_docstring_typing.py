@@ -35,6 +35,9 @@ import sphinx_docstring_typing
 ])
 def test_autodoc_process_docstring(input, expected):
     app = mock.Mock()
+    app.warn.side_effect = print
+    app.verbose.side_effect = print
+
     lines = list(input)
 
     sphinx_docstring_typing.autodoc_process_docstring(
