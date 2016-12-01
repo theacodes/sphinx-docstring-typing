@@ -32,8 +32,6 @@ setup(
     license='Apache 2.0',
     keywords='sphinx docstrings typing napoleon',
     classifiers=[
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
