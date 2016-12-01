@@ -34,7 +34,7 @@ _BARE_TYPES = ('Any', 'Callable', 'Iterable', 'Generator', 'Text')
 _BARE_TYPES_PATTERN = '|'.join(_BARE_TYPES)
 
 # Regex used to find & replace bare type hints.
-BARE_TYPE_RE = re.compile(r'({})(?!\])'.format(_BARE_TYPES_PATTERN))
+BARE_TYPE_RE = re.compile(r'({})(?! ?\[)'.format(_BARE_TYPES_PATTERN))
 
 
 class CollapseAttrsVisitor(ast.NodeTransformer):
@@ -105,6 +105,9 @@ class RedocVisitor(ast.NodeVisitor):
             node.operand.id = '~' + node.operand.id
         return self.generic_visit(node)
 
+    def visit_Ellipsis(self, node):
+        self.output += '...'
+
 
 def transform(annotation):
     """Transforms a pep 484 type annotation into rst refences."""
@@ -132,6 +135,11 @@ def autodoc_process_docstring(
                 line)
 
             # Then check for type hints that take arguments.
+            new_line = re.sub(
+                TYPE_RE,
+                lambda match: transform(match.group(1)),
+                new_line)
+
             new_line = re.sub(
                 TYPE_RE,
                 lambda match: transform(match.group(1)),
