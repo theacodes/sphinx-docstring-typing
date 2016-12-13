@@ -32,6 +32,12 @@ import sphinx_docstring_typing
      [':py:obj:`~typing.Tuple` [ :py:obj:`int`, ... ] ']),
     (['blah blah Sequence[int] blah blah'],
      ['blah blah :py:obj:`~typing.Sequence` [ :py:obj:`int` ]  blah blah']),
+    (['Mapping[str, Any]'],
+     [':py:obj:`~typing.Mapping` [ :py:obj:`str`, :py:obj:`~typing.Any` ] ']),
+    (['Optional[datetime]'],
+     [':py:obj:`~typing.Optional` [ :py:obj:`datetime` ] ']),
+    (['*Optional[datetime]*'],
+     [':py:obj:`~typing.Optional` [ :py:obj:`datetime` ] ']),
 ])
 def test_autodoc_process_docstring(input, expected):
     app = mock.Mock()

@@ -25,16 +25,17 @@ _TYPES = set(typing.__all__) - set((
 _TYPE_PATTERN = '|'.join(_TYPES)
 
 # Regex used to find & replace type hints.
-TYPE_RE = re.compile(r'(({})\[.+\])'.format(_TYPE_PATTERN))
+TYPE_RE = re.compile(r'\*?(({})\[.+\])\*?'.format(_TYPE_PATTERN))
 
 # Bare type hints don't have any arguments, e.g., Any vs List[int].
-_BARE_TYPES = ('Any', 'Callable', 'Iterable', 'Generator', 'Text')
+_BARE_TYPES = ('Any', 'Text', 'Hashable', 'Sized', 'ByteString', 'AnyStr')
 
 # A pattern that matches any bare types.
 _BARE_TYPES_PATTERN = '|'.join(_BARE_TYPES)
 
 # Regex used to find & replace bare type hints.
-BARE_TYPE_RE = re.compile(r'({})(?! ?\[)'.format(_BARE_TYPES_PATTERN))
+BARE_TYPE_RE = re.compile(
+    r'\*?({})(?! ?\[)(?! ?`)\*?'.format(_BARE_TYPES_PATTERN))
 
 
 class CollapseAttrsVisitor(ast.NodeTransformer):
@@ -124,36 +125,33 @@ def autodoc_process_docstring(
     """Replaces PEP 484 style type annotations in docstrings with sphinx-style
     references."""
 
+    old_lines = lines[:]
+
     for n, line in enumerate(lines):
         new_line = line
 
         try:
-            # Check for bare type hints first.
-            new_line = re.sub(
-                BARE_TYPE_RE,
-                lambda match: transform(match.group(1)),
-                line)
-
-            # Then check for type hints that take arguments.
+            # Check for type hints that take arguments.
             new_line = re.sub(
                 TYPE_RE,
                 lambda match: transform(match.group(1)),
                 new_line)
 
+            # Check for any lingering bare type hints.
             new_line = re.sub(
-                TYPE_RE,
+                BARE_TYPE_RE,
                 lambda match: transform(match.group(1)),
                 new_line)
 
         except Exception as e:
             app.warn(
                 'sphinx-docstring-typing: Un-parseable line in docstring: \n'
-                '\t>%s \n\nException: %s', line, e)
+                '\t> %s \n\nException: %s' % (line, e))
 
         if line != new_line:
             app.verbose(
                 'sphinx-docstring-typing: docstring line for %s replaced: '
-                '\n\t> %s \n\t> %s', name, line, new_line)
+                '\n\t> %s \n\t> %s' % (name, line, new_line))
             lines[n] = new_line
 
 
