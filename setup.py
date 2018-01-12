@@ -15,7 +15,9 @@
 from setuptools import setup, find_packages
 
 
-DEPENDENCIES = ('typing',)
+EXTRAS_REQUIREMENTS = {
+    ':python_version<"3.5"': ['typing'],
+}
 
 
 with open('README.rst', 'r') as fh:
@@ -28,7 +30,8 @@ setup(
     description='Typing annotations in sphinx docstrings.',
     long_description=long_description,
     packages=find_packages(exclude='tests'),
-    install_requires=DEPENDENCIES,
+    install_requires=(),
+    extras_require=EXTRAS_REQUIREMENTS,
     license='Apache 2.0',
     keywords='sphinx docstrings typing napoleon',
     classifiers=[
