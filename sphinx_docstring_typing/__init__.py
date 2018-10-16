@@ -16,6 +16,11 @@ import ast
 import re
 import typing
 
+import sphinx.util.logging
+
+
+_LOGGER = sphinx.util.logging.getLogger(__name__)
+
 # All available type hints from the typing module.
 _TYPES = set(typing.__all__) - set((
     'cast', 'get_type_hints', 'NewType', 'no_type_check',
@@ -144,12 +149,12 @@ def autodoc_process_docstring(
                 new_line)
 
         except Exception as e:
-            app.warn(
+            _LOGGER.warn(
                 'sphinx-docstring-typing: Un-parseable line in docstring: \n'
                 '\t> %s \n\nException: %s' % (line, e))
 
         if line != new_line:
-            app.verbose(
+            _LOGGER.verbose(
                 'sphinx-docstring-typing: docstring line for %s replaced: '
                 '\n\t> %s \n\t> %s' % (name, line, new_line))
             lines[n] = new_line

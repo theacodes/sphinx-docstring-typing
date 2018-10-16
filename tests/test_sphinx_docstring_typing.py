@@ -18,7 +18,7 @@ import pytest
 import sphinx_docstring_typing
 
 
-@pytest.mark.parametrize('input,expected', [
+@pytest.mark.parametrize('input_,expected', [
     (['Any'],
      [':py:obj:`~typing.Any`']),
     (['Sequence[int]'],
@@ -39,14 +39,16 @@ import sphinx_docstring_typing
     (['*Optional[datetime]*'],
      [':py:obj:`~typing.Optional` [ :py:obj:`datetime` ] ']),
 ])
-def test_autodoc_process_docstring(input, expected):
+def test_autodoc_process_docstring(input_, expected):
     app = mock.Mock()
-    app.warn.side_effect = print
-    app.verbose.side_effect = print
+    logger = mock.Mock()
+    logger.warn.side_effect = print
+    logger.verbose.side_effect = print
 
-    lines = list(input)
+    lines = list(input_)
 
-    sphinx_docstring_typing.autodoc_process_docstring(
-        app, None, None, None, None, lines)
+    with mock.patch.object(sphinx_docstring_typing, '_LOGGER', new=logger):
+        sphinx_docstring_typing.autodoc_process_docstring(
+            app, None, None, None, None, lines)
 
     assert lines == expected
