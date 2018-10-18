@@ -26,7 +26,7 @@ with open('README.rst', 'r') as fh:
 
 setup(
     name='sphinx-docstring-typing',
-    version='0.0.3',
+    version='0.0.4',
     description='Typing annotations in sphinx docstrings.',
     long_description=long_description,
     packages=find_packages(exclude='tests'),
