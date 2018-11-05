@@ -18,27 +18,48 @@ import pytest
 import sphinx_docstring_typing
 
 
-@pytest.mark.parametrize('input_,expected', [
-    (['Any'],
-     [':py:obj:`~typing.Any`']),
-    (['Sequence[int]'],
-     [':py:obj:`~typing.Sequence` [ :py:obj:`int` ] ']),
-    (['Tuple[int, int]'],
-     [':py:obj:`~typing.Tuple` [ :py:obj:`int`, :py:obj:`int` ] ']),
-    (['Sequence[int, List[str]]'],
-     [':py:obj:`~typing.Sequence` [ :py:obj:`int`, :py:obj:`~typing.List` '
-      '[ :py:obj:`str` ]  ] ']),
-    (['Tuple[int,...]'],
-     [':py:obj:`~typing.Tuple` [ :py:obj:`int`, ... ] ']),
-    (['blah blah Sequence[int] blah blah'],
-     ['blah blah :py:obj:`~typing.Sequence` [ :py:obj:`int` ]  blah blah']),
-    (['Mapping[str, Any]'],
-     [':py:obj:`~typing.Mapping` [ :py:obj:`str`, :py:obj:`~typing.Any` ] ']),
-    (['Optional[datetime]'],
-     [':py:obj:`~typing.Optional` [ :py:obj:`datetime` ] ']),
-    (['*Optional[datetime]*'],
-     [':py:obj:`~typing.Optional` [ :py:obj:`datetime` ] ']),
-])
+@pytest.mark.parametrize(
+    "input_,expected",
+    [
+        (["Any"], [":py:obj:`~typing.Any`"]),
+        (["Sequence[int]"], [":py:obj:`~typing.Sequence` [ :py:obj:`int` ] "]),
+        (
+            ["Tuple[int, int]"],
+            [":py:obj:`~typing.Tuple` [ :py:obj:`int`, :py:obj:`int` ] "],
+        ),
+        (
+            ["Sequence[int, List[str]]"],
+            [
+                ":py:obj:`~typing.Sequence` [ :py:obj:`int`, :py:obj:`~typing.List` "
+                "[ :py:obj:`str` ]  ] "
+            ],
+        ),
+        (
+            ["Tuple[int,...]"],
+            [":py:obj:`~typing.Tuple` [ :py:obj:`int`, ... ] "],
+        ),
+        (
+            ["blah blah Sequence[int] blah blah"],
+            [
+                "blah blah :py:obj:`~typing.Sequence` [ :py:obj:`int` ]  blah blah"
+            ],
+        ),
+        (
+            ["Mapping[str, Any]"],
+            [
+                ":py:obj:`~typing.Mapping` [ :py:obj:`str`, :py:obj:`~typing.Any` ] "
+            ],
+        ),
+        (
+            ["Optional[datetime]"],
+            [":py:obj:`~typing.Optional` [ :py:obj:`datetime` ] "],
+        ),
+        (
+            ["*Optional[datetime]*"],
+            [":py:obj:`~typing.Optional` [ :py:obj:`datetime` ] "],
+        ),
+    ],
+)
 def test_autodoc_process_docstring(input_, expected):
     app = mock.Mock()
     logger = mock.Mock()
@@ -47,8 +68,9 @@ def test_autodoc_process_docstring(input_, expected):
 
     lines = list(input_)
 
-    with mock.patch.object(sphinx_docstring_typing, '_LOGGER', new=logger):
+    with mock.patch.object(sphinx_docstring_typing, "_LOGGER", new=logger):
         sphinx_docstring_typing.autodoc_process_docstring(
-            app, None, None, None, None, lines)
+            app, None, None, None, None, lines
+        )
 
     assert lines == expected

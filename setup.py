@@ -15,33 +15,31 @@
 from setuptools import setup, find_packages
 
 
-EXTRAS_REQUIREMENTS = {
-    ':python_version<"3.5"': ['typing'],
-}
+EXTRAS_REQUIREMENTS = {':python_version<"3.5"': ["typing"]}
 
 
-with open('README.rst', 'r') as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 
 setup(
-    name='sphinx-docstring-typing',
-    version='0.0.4',
-    description='Typing annotations in sphinx docstrings.',
+    name="sphinx-docstring-typing",
+    version="0.0.4",
+    description="Typing annotations in sphinx docstrings.",
     long_description=long_description,
-    packages=find_packages(exclude='tests'),
+    packages=find_packages(exclude="tests"),
     install_requires=(),
     extras_require=EXTRAS_REQUIREMENTS,
-    license='Apache 2.0',
-    keywords='sphinx docstrings typing napoleon',
+    license="Apache 2.0",
+    keywords="sphinx docstrings typing napoleon",
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: POSIX',
-        'Topic :: Internet :: WWW/HTTP',
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX",
+        "Topic :: Internet :: WWW/HTTP",
     ],
 )
